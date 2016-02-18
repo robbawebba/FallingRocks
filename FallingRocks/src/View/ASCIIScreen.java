@@ -10,7 +10,7 @@ import static java.lang.Math.*;
  * right.
  **/
 
-class ASCIIScreen {
+public class ASCIIScreen {
 
     static StringBuilder[] screen;
     static StringBuilder line;
@@ -23,7 +23,7 @@ class ASCIIScreen {
     /*******************************************************************
      * Constructor - initializes screen and line
      *******************************************************************/
-    ASCIIScreen(){
+    public ASCIIScreen(){
 
 	screen = new StringBuilder[HEIGHT];
 
@@ -40,7 +40,7 @@ class ASCIIScreen {
     /*******************************************************************
      * Print the current state.
      *******************************************************************/
-    void printScreen(){
+    public void printScreen(){
 
 		System.out.println(line);
 		for (int j = 0; j < HEIGHT; j++)
@@ -93,14 +93,14 @@ class ASCIIScreen {
     /********************************************************************
      * Initialize game pieces.
      ********************************************************************/
-    void init(){
-	putBallInScreen(0,8);
+    public void init(){
+    	putBallInScreen(0,8);
     }
 
     /********************************************************************
      * Have game respond to a single character input.
      ********************************************************************/
-    void processChar(int i){
+    public void processChar(int i){
 	switch(i){
 	case 'l':
 	    moveBallRight();
