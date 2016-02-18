@@ -1,4 +1,4 @@
-package ascii;
+package View;
 
 import java.util.concurrent.*;
 import static java.lang.Math.*;
