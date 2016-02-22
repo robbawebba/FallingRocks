@@ -1,7 +1,6 @@
 package ascii;
 
 import java.util.Timer;
-import java.util.concurrent.*;
 
 /**
  * Code for this class currently runs a local main() for testing (shows a ball
@@ -16,11 +15,12 @@ public class ASCIIScreen {
 	static StringBuilder blank;
 	private final static int WIDTH = 80;
 	private final static int HEIGHT = 24;
+	boolean terminateApplication = false;
 
 	static Timer timer = new Timer();
 	int level = 1;
 	public static Person person;
-	
+
 	private static boolean isTerminated = true;
 
 	/*******************************************************************
@@ -28,11 +28,11 @@ public class ASCIIScreen {
 	 *******************************************************************/
 	ASCIIScreen() {
 
-		setScreen(new StringBuilder[HEIGHT]);
+		screen = new StringBuilder[HEIGHT];
 
 		blank = new StringBuilder();
 		blank.setLength(WIDTH);
-		for (int i = 0; i < WIDTH; i++){
+		for (int i = 0; i < WIDTH; i++) {
 			blank.append(' ');
 		}
 
@@ -41,7 +41,7 @@ public class ASCIIScreen {
 
 		line = new StringBuilder("");
 		for (int i = 0; i < WIDTH / 2; i++) {
-			line.append('\\'); 
+			line.append('\\');
 			line.append('/');
 			screen[0] = line;
 		}
@@ -89,10 +89,12 @@ public class ASCIIScreen {
 			person.moveLeft();
 		case 'l':
 			person.moveRight();
+		case 'q':
+			terminateApplication = true;
 		case 's':
-			if (isTerminated){
-				
-				//If the game is stopped, create a new blank board
+			if (isTerminated) {
+
+				// If the game is stopped, create a new blank board
 				setScreen(new StringBuilder[HEIGHT]);
 
 				blank = new StringBuilder("");
@@ -108,13 +110,10 @@ public class ASCIIScreen {
 					line.append('/');
 					screen[0] = line;
 				}
-				//initialize the game
+				// initialize the game
 				init();
 			}
-			
-		case 'q':
-			ASCIIGameTemplate.terminateApplication = true;
-			
+
 		}
 
 	}
@@ -131,11 +130,10 @@ public class ASCIIScreen {
 		// GAME OVER
 		// SCORE: *score here*
 		// press s to play again
-		
+
 	}
 
-	
-	//Getters and setters for private static variables
+	// Getters and setters for private static variables
 
 	public static int getWidth() {
 		return WIDTH;
@@ -152,10 +150,10 @@ public class ASCIIScreen {
 	public static void setScreen(StringBuilder[] screen) {
 		ASCIIScreen.screen = screen;
 	}
-	
-	//Getter for isTerminated which is used as a condition in the game template
-	
-	public static boolean getIsTerminated(){
+
+	// Getter for isTerminated which is used as a condition in the game template
+
+	public static boolean getIsTerminated() {
 		return isTerminated;
 	}
 }

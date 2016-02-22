@@ -17,7 +17,7 @@ public class Person extends GameObjects {
 
 	public Person(int xPos) {
 		x = xPos;
-		y = WIDTH - 3;
+		y = HEIGHT - 3;
 	}
 
 	public int getX() {

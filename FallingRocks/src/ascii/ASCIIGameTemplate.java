@@ -6,11 +6,9 @@ import jline.*;
 import java.io.*;
 /************************************************************  * This code wraps an ASCII game so that we can process individual  * char inputs (otherwise, Java only likes to process whole lines  * followed by "enter" key).  ************************************************************/
 public class ASCIIGameTemplate {     
-	static ASCIIScreen game; 
-	static boolean terminateApplication = false;
-	
+
 	public static void main(String[] args) throws IOException {
-        
+		ASCIIScreen game; 
         game = new ASCIIScreen();
         
         ConsoleReader reader = new ConsoleReader(System.in, new PrintWriter(System.out));
@@ -21,7 +19,7 @@ public class ASCIIGameTemplate {
             game.printScreen();
             TimeUnit.MILLISECONDS.sleep(100);
         	int i = 0; 
-        	while (!terminateApplication) { 
+        	while (!game.terminateApplication) { 
         		i = reader.readCharacter(allowed);
         		System.out.println(i);
         		game.processChar(i); 
