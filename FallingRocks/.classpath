@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Ben/Downloads/jline.zip"/>
 	<classpathentry kind="lib" path="jline-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ben/Downloads/jline-1.0/jline-1.0/jline-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

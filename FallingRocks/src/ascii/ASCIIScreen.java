@@ -28,20 +28,22 @@ public class ASCIIScreen {
 	 *******************************************************************/
 	ASCIIScreen() {
 
-		setScreen(new StringBuilder[getHeight()]);
+		setScreen(new StringBuilder[HEIGHT]);
 
-		blank = new StringBuilder("");
-		for (int i = 0; i < getWidth(); i++)
-			blank.insert(1, ' ');
+		blank = new StringBuilder();
+		blank.setLength(WIDTH);
+		for (int i = 0; i < WIDTH; i++){
+			blank.append(' ');
+		}
 
-		for (int i = 0; i < getHeight(); i++)
+		for (int i = 0; i < HEIGHT; i++)
 			getScreen()[i] = new StringBuilder(blank); // WHY?
 
 		line = new StringBuilder("");
-		for (int i = 0; i < getWidth() / 2; i++) {
+		for (int i = 0; i < WIDTH / 2; i++) {
 			line.append('\\'); 
 			line.append('/');
-			getScreen()[0] = line;
+			screen[0] = line;
 		}
 
 	}
@@ -51,8 +53,8 @@ public class ASCIIScreen {
 	 *******************************************************************/
 	void printScreen() {
 
-		for (int j = 0; j < getHeight(); j++)
-			System.out.println(getScreen()[j]);
+		for (int j = 0; j < HEIGHT; j++)
+			System.out.println(screen[j]);
 		System.out.println(line);
 	}
 
@@ -91,24 +93,25 @@ public class ASCIIScreen {
 			if (isTerminated){
 				
 				//If the game is stopped, create a new blank board
-				setScreen(new StringBuilder[getHeight()]);
+				setScreen(new StringBuilder[HEIGHT]);
 
 				blank = new StringBuilder("");
-				for (int i = 0; i < getWidth(); i++)
+				for (int i = 0; i < WIDTH; i++)
 					blank.insert(1, ' ');
 
-				for (int i = 0; i < getHeight(); i++)
+				for (int i = 0; i < HEIGHT; i++)
 					getScreen()[i] = new StringBuilder(blank); // WHY?
 
 				line = new StringBuilder("");
-				for (int i = 0; i < getWidth() / 2; i++) {
+				for (int i = 0; i < WIDTH / 2; i++) {
 					line.append('\\');
 					line.append('/');
-					getScreen()[0] = line;
+					screen[0] = line;
 				}
 				//initialize the game
 				init();
 			}
+			
 		case 'q':
 			ASCIIGameTemplate.terminateApplication = true;
 			
@@ -128,8 +131,6 @@ public class ASCIIScreen {
 		// GAME OVER
 		// SCORE: *score here*
 		// press s to play again
-
-		
 		
 	}
 
