@@ -1,4 +1,4 @@
-package Model;
+package ascii;
 
 public class GameObjects {
 	

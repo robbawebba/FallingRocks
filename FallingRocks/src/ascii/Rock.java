@@ -1,6 +1,5 @@
-package Model;
+package ascii;
 
-import ascii.ASCIIScreen;
 
 public class Rock extends GameObjects {
 

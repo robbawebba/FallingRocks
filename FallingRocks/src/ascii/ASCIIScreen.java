@@ -3,10 +3,6 @@ package ascii;
 import java.util.Timer;
 import java.util.concurrent.*;
 
-import Model.Person;
-import Model.fallRock;
-import static java.lang.Math.*;
-
 /**
  * Code for this class currently runs a local main() for testing (shows a ball
  * moving across the screen) or operates with ASCIIGameTemplate main() to allow
@@ -43,7 +39,7 @@ public class ASCIIScreen {
 
 		line = new StringBuilder("");
 		for (int i = 0; i < getWidth() / 2; i++) {
-			line.append('\\');
+			line.append('\\'); 
 			line.append('/');
 			getScreen()[0] = line;
 		}
@@ -85,16 +81,37 @@ public class ASCIIScreen {
 	/********************************************************************
 	 * Have game respond to a single character input.
 	 ********************************************************************/
-	void processChar(int i) {
-		switch (i) {
-		case 'l':
-			person.moveLeft();
+	void processChar(int c) {
+		switch (c) {
 		case 'j':
+			person.moveLeft();
+		case 'l':
 			person.moveRight();
-		case 'q':
-			if (isTerminated == true){
+		case 's':
+			if (isTerminated){
+				
+				//If the game is stopped, create a new blank board
+				setScreen(new StringBuilder[getHeight()]);
+
+				blank = new StringBuilder("");
+				for (int i = 0; i < getWidth(); i++)
+					blank.insert(1, ' ');
+
+				for (int i = 0; i < getHeight(); i++)
+					getScreen()[i] = new StringBuilder(blank); // WHY?
+
+				line = new StringBuilder("");
+				for (int i = 0; i < getWidth() / 2; i++) {
+					line.append('\\');
+					line.append('/');
+					getScreen()[0] = line;
+				}
+				//initialize the game
 				init();
 			}
+		case 'q':
+			ASCIIGameTemplate.terminateApplication = true;
+			
 		}
 
 	}
@@ -110,34 +127,12 @@ public class ASCIIScreen {
 		// Change string builder to show just
 		// GAME OVER
 		// SCORE: *score here*
-		// press q to play again
+		// press s to play again
+
+		
+		
 	}
 
-	/********************************************************************
-	 * For testing purposes only.
-	 ********************************************************************/
-	public static void main(String[] a) {
-
-		ASCIIScreen game = new ASCIIScreen();
-
-		try {
-			game.init();
-
-			game.printScreen();
-			TimeUnit.MILLISECONDS.sleep(100);
-
-			while (isTerminated == false) {
-
-				person.updatePosition();
-				
-				//Print the updated screen, then wait 100 milliseconds
-				game.printScreen();
-				TimeUnit.MILLISECONDS.sleep(100);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	//Getters and setters for private static variables
 
@@ -155,5 +150,11 @@ public class ASCIIScreen {
 
 	public static void setScreen(StringBuilder[] screen) {
 		ASCIIScreen.screen = screen;
+	}
+	
+	//Getter for isTerminated which is used as a condition in the game template
+	
+	public static boolean getIsTerminated(){
+		return isTerminated;
 	}
 }

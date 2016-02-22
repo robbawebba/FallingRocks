@@ -1,6 +1,5 @@
-package Model;
+package ascii;
 
-import ascii.ASCIIScreen;
 
 public class Person extends GameObjects {
 
@@ -26,13 +25,15 @@ public class Person extends GameObjects {
 	}
 
 	public void moveLeft() {
-		if (x > 1) {
+		if (x > 0) {
 			x = x - 1;
 		}
 	}
 
 	public void moveRight() {
-		x = x + 1;
+		if (x < 79){
+			x = x + 1;
+		}
 	}
 
 	public int getSize() {
@@ -45,29 +46,31 @@ public class Person extends GameObjects {
 
 	public void updatePosition() {
 		// Have to put person on the screen
-		StringBuilder line;
-		line = new StringBuilder("");
-		for (int i = 0; i < WIDTH; i++) {
-			line.append(' ');
-		}
-		line.setCharAt(x, personHead);
-		screen[y] = line;
+		if (!ASCIIScreen.getIsTerminated()) {
+			StringBuilder line;
+			line = new StringBuilder("");
+			for (int i = 0; i < WIDTH; i++) {
+				line.append(' ');
+			}
+			line.setCharAt(x, personHead);
+			screen[y] = line;
 
-		line = new StringBuilder("");
-		for (int i = 0; i < WIDTH; i++) {
-			line.append(' ');
-		}
-		line.setCharAt(x, personBody);
-		screen[y + 1] = line;
+			line = new StringBuilder("");
+			for (int i = 0; i < WIDTH; i++) {
+				line.append(' ');
+			}
+			line.setCharAt(x, personBody);
+			screen[y + 1] = line;
 
-		line = new StringBuilder("");
-		for (int i = 0; i < WIDTH; i++) {
-			line.append(' ');
+			line = new StringBuilder("");
+			for (int i = 0; i < WIDTH; i++) {
+				line.append(' ');
+			}
+			line.setCharAt(x, personLegs);
+			screen[y + 2] = line;
+
+			ASCIIScreen.setScreen(screen);
 		}
-		line.setCharAt(x, personLegs);
-		screen[y + 2] = line;
-		
-		ASCIIScreen.setScreen(screen);
 	}
 
 }
