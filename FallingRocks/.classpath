@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Eclipse/eclipse/jline-1.0/jline-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/eclipse/jline-1.0/jline-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ben/Downloads/jline.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,5 +1,6 @@
 /*  * Copyright (c) 2002-2006, Marc Prud'hommeaux. All rights reserved.  *  * This software is distributable under the BSD license. See the terms of the  * BSD license in the documentation provided with this software.  */ package ascii;
-import java.util.concurrent.*; import jline.*;
+import java.util.concurrent.*;
+import jline.*;
 import java.io.*;
 /************************************************************  * This code wraps an ASCII game so that we can process individual  * char inputs (otherwise, Java only likes to process whole lines  * followed by "enter" key).  ************************************************************/
 public class ASCIIGameTemplate {     

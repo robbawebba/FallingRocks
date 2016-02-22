@@ -1,132 +1,159 @@
 package ascii;
 
+import java.util.Timer;
 import java.util.concurrent.*;
+
+import Model.Person;
+import Model.fallRock;
 import static java.lang.Math.*;
 
 /**
- * Code for this class currently runs a local main() for testing (shows
- * a ball moving across the screen) or operates with ASCIIGameTemplate
- * main() to allow keyboard input (see allowed chars below) to move the ball
- * right.
+ * Code for this class currently runs a local main() for testing (shows a ball
+ * moving across the screen) or operates with ASCIIGameTemplate main() to allow
+ * keyboard input (see allowed chars below) to move the ball right.
  **/
 
-class ASCIIScreen {
+public class ASCIIScreen {
 
-    static StringBuilder[] screen;
-    static StringBuilder line;
-    static StringBuilder blank;
-    final static int WIDTH = 74;
-    final static int HEIGHT = 20;
-    int ballX;
-    int ballY;
+	private static StringBuilder[] screen;
+	static StringBuilder line;
+	static StringBuilder blank;
+	private final static int WIDTH = 80;
+	private final static int HEIGHT = 24;
 
-    /*******************************************************************
-     * Constructor - initializes screen and line
-     *******************************************************************/
-    ASCIIScreen(){
-
-	screen = new StringBuilder[HEIGHT];
-
-	blank = new StringBuilder("||");
-	for (int i = 0; i < WIDTH-2; i++) blank.insert(1, ' ');
+	static Timer timer = new Timer();
+	int level = 1;
+	public static Person person;
 	
-	for(int i = 0; i < HEIGHT; i++)
-	    screen[i] = new StringBuilder(blank); //WHY?
+	private static boolean isTerminated = true;
 
-	line = new StringBuilder("");
-	for (int i = 0; i < WIDTH; i++) line.append('_');
-    }
+	/*******************************************************************
+	 * Constructor - initializes screen and line
+	 *******************************************************************/
+	ASCIIScreen() {
 
-    /*******************************************************************
-     * Print the current state.
-     *******************************************************************/
-    void printScreen(){
+		setScreen(new StringBuilder[getHeight()]);
 
+		blank = new StringBuilder("");
+		for (int i = 0; i < getWidth(); i++)
+			blank.insert(1, ' ');
+
+		for (int i = 0; i < getHeight(); i++)
+			getScreen()[i] = new StringBuilder(blank); // WHY?
+
+		line = new StringBuilder("");
+		for (int i = 0; i < getWidth() / 2; i++) {
+			line.append('\\');
+			line.append('/');
+			getScreen()[0] = line;
+		}
+
+	}
+
+	/*******************************************************************
+	 * Print the current state.
+	 *******************************************************************/
+	void printScreen() {
+
+		for (int j = 0; j < getHeight(); j++)
+			System.out.println(getScreen()[j]);
 		System.out.println(line);
-		for (int j = 0; j < HEIGHT; j++)
-		    System.out.println(screen[j]);
-		System.out.println(line);
-    }
-
-    /******************************************************************
-     * Assume row 0 is in the game, but first and last cols are not
-     * (they are pipes '|'). x,y are coordinates of center.
-     ******************************************************************/
-    void putBallInScreen(int x, int y){
-
-	for (int row = max(y-1, 0); row < min(HEIGHT, y+2); row++){
-
-	    //Find where to start printing ball in row. Width depends on which row.
-	    int widthOffset = row == y ? 2 : 1;
-		
-	    for (int col = max(1, x - widthOffset); col < min(WIDTH-1, x + widthOffset + 1); col++){
-		screen[row].deleteCharAt(col);
-		screen[row].insert(col, '*');
-	    }
-	    ballX = x;
-	    ballY = y;
-	}	
-    }
-    
-    /******************************************************************
-     * x,y is current center of ball
-     ******************************************************************/
-    void moveBallRight(){
-	int x = ballX;
-	int y = ballY;
-	System.out.println("moving ball right");
-	for (int row = max(y-1, 0); row < min(HEIGHT, y+2); row++){
-
-	    //Find where to start printing ball in row. Width depends on which row.
-	    int widthOffset = row == y ? 2 : 1;
-
-	    if ((x - widthOffset) > 0) {
-		screen[row].replace(x - widthOffset, x - widthOffset + 1, " ");
-	    }
-	    if ((x + widthOffset) < WIDTH) {
-		screen[row].replace(x + widthOffset, x + widthOffset + 1, "*");
-	    }
 	}
-	ballX++;
-    }
-    
-    /********************************************************************
-     * Initialize game pieces.
-     ********************************************************************/
-    void init(){
-	putBallInScreen(0,8);
-    }
 
-    /********************************************************************
-     * Have game respond to a single character input.
-     ********************************************************************/
-    void processChar(int i){
-	switch(i){
-	case 'l':
-	    moveBallRight();
+	/***************************************************
+	 * Getter for person object
+	 ***************************************************/
+
+	public static Person getPerson() {
+		return person;
 	}
-    }
-    
-    /********************************************************************
-     * For testing purposes only.
-     ********************************************************************/
-    public static void main(String[] a){
 
-	ASCIIScreen game = new ASCIIScreen();
+	/********************************************************************
+	 * Initialize game pieces.
+	 ********************************************************************/
 
-	try {
-	    game.putBallInScreen(0,8);
-	    game.printScreen();
-	    TimeUnit.MILLISECONDS.sleep(100);
-	    
-	    for(int i = 0; i < 25; i++){
-		game.moveBallRight();
-		game.printScreen();
-		TimeUnit.MILLISECONDS.sleep(100);
-	    }
-	} catch (InterruptedException e) {
-	    e.printStackTrace();
+	void init() {
+		isTerminated = false;
+		person = new Person(40);
+		person.updatePosition();
+
+		// Create timer to make rocks start to fall
+		timer.scheduleAtFixedRate(new fallRock(), System.currentTimeMillis(),
+				(long) (400.0 / level));
 	}
-    }
+
+	/********************************************************************
+	 * Have game respond to a single character input.
+	 ********************************************************************/
+	void processChar(int i) {
+		switch (i) {
+		case 'l':
+			person.moveLeft();
+		case 'j':
+			person.moveRight();
+		case 'q':
+			if (isTerminated == true){
+				init();
+			}
+		}
+
+	}
+
+	/********************************************************************
+	 * Terminate Game
+	 ********************************************************************/
+
+	public static void terminate() {
+		isTerminated = true;
+		timer.cancel();
+
+		// Change string builder to show just
+		// GAME OVER
+		// SCORE: *score here*
+		// press q to play again
+	}
+
+	/********************************************************************
+	 * For testing purposes only.
+	 ********************************************************************/
+	public static void main(String[] a) {
+
+		ASCIIScreen game = new ASCIIScreen();
+
+		try {
+			game.init();
+
+			game.printScreen();
+			TimeUnit.MILLISECONDS.sleep(100);
+
+			while (isTerminated == false) {
+
+				person.updatePosition();
+				
+				//Print the updated screen, then wait 100 milliseconds
+				game.printScreen();
+				TimeUnit.MILLISECONDS.sleep(100);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Getters and setters for private static variables
+
+	public static int getWidth() {
+		return WIDTH;
+	}
+
+	public static int getHeight() {
+		return HEIGHT;
+	}
+
+	public static StringBuilder[] getScreen() {
+		return screen;
+	}
+
+	public static void setScreen(StringBuilder[] screen) {
+		ASCIIScreen.screen = screen;
+	}
 }
-
